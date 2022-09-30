@@ -1,0 +1,57 @@
+class Solution {
+    int point;
+    int edge;
+    int[] e,ne,he,d;
+    int idx;
+    List<Integer> list;
+    List<List<Integer>> res;
+    void add(int a,int b) {
+        e[idx] = b;
+        ne[idx] = he[a];
+        he[a] = idx;
+        idx ++;
+    }
+    void topu_sort(int start) {
+        if (start == point - 1) {
+            res.add(new ArrayList<>(list));
+            return ;
+        }
+        for (int i = he[start] ; i != -1 ; i = ne[i]) {
+            int t = e[i];
+            list.add(t);
+            topu_sort(t);
+            list.remove(list.size() - 1);
+        }
+    }
+    public List<List<Integer>> allPathsSourceTarget(int[][] graph) {
+        res = new ArrayList<>();
+        list = new ArrayList<>();
+        point = graph.length;
+        for (int[] arr: graph) {
+            edge += arr.length;
+        }
+        he = new int[point + 10];
+        ne = new int[edge + 10];
+        e = new int[edge + 10];
+        d = new int[point + 10];
+        Arrays.fill(he,-1);
+        int cnt = 0;
+        for (int[] arr : graph) {
+            for (int i : arr) {
+                add(cnt,i);
+                d[i] ++;
+            }
+            cnt ++;
+        }
+        int start;
+        for (start = 0; start < point; start ++) {
+            
+            if (d[start] == 0) {
+                break;
+            }
+        }
+        list.add(start);
+        topu_sort(start);
+        return res;
+    }
+}
