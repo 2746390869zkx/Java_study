@@ -1,0 +1,21 @@
+class Solution {
+    public int minEatingSpeed(int[] piles, int h) {
+        int max = 0,sum = 0;
+        for (int i : piles) {
+            max = Math.max(max,i);
+            sum += i;
+        }
+        int min = (sum % h == 0) ? sum / h : (sum / h + 1);
+        int l = min,r = max;
+        while (l < r) {
+            int mid = (l + r) >> 1;
+            int s = 0;
+            for (int i : piles) s += (i % mid == 0) ? i / mid : (i / mid + 1);
+            if (s > h) {
+                //速度加快
+                l = mid + 1;
+            } else r = mid;
+        }
+        return l;
+    }
+}
