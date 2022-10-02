@@ -1,0 +1,19 @@
+/**
+ * @author zkx
+ * 饿汉式，没有用到就加载
+ */
+public class SingleHunger_Demo1 {
+
+    //定义一个私有的静态对象，并且直接创建好
+    private static SingleHunger_Demo1 instance = new SingleHunger_Demo1();
+
+    //将构造器私有化
+    private SingleHunger_Demo1() {
+
+    }
+    //对外开放一个得到单例的静态方法
+    public static SingleHunger_Demo1 getInstance() {
+        return instance;
+    }
+
+}
