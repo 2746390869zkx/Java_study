@@ -21,3 +21,27 @@ public class SingleHunger_Demo1 {
     }
 
 }
+
+/**
+ * @author zkx
+ 这种写法，是线程不安全的，但是可以做到延迟加载。
+ * 懒汉式单例模式，在用到才加载，
+ */
+public class SingletonDemoInLazy {
+    
+    /*私有 + static*/
+    private static SingletonDemoInLazy instance ;
+    /*私有构造器*/
+    private SingletonDemoInLazy() {
+        
+    }
+    /* 提供一个对外的的得到单例的方法 */
+    public static SingletonDemoInLazy getInstance() {
+        
+        //如果还没有创建，便创建后返回
+        if (instance == null) {
+            instance = new SingletonDemoInLazy();
+        }
+        return instance;
+    }
+}
