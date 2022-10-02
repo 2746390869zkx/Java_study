@@ -68,3 +68,67 @@ public class SingletonDemoInLazy_Safe {
         return instance;
     }
 }
+
+
+/**
+ * @author zkx
+ * 懒汉式单例模式，在用到才加载，双检锁
+ */
+public class SingletonDemoInDoubleCheckLock {
+
+    /*私有 + static*/
+    private static SingletonDemoInDoubleCheckLock instance ;
+    /*私有构造器*/
+    private SingletonDemoInDoubleCheckLock() {
+
+    }
+    /* 提供一个对外的的得到单例的方法*/
+    public  static SingletonDemoInDoubleCheckLock getInstance() {
+
+        //如果还没有创建，便创建后返回
+        if (instance == null) {
+            //在加锁之前判断是否为空，可以确保 instance 不为空的情况下，不用加锁，可以直接返回。
+            synchronized (SingletonDemoInDoubleCheckLock.class) {
+                if (instance == null) {
+                    instance = new SingletonDemoInDoubleCheckLock();
+                }
+            }
+
+        }
+        return instance;
+    }
+}
+
+/**
+ * @author zkx
+ * 静态内部类实现单例模式，因为是classLoader加载的所以是线程安全的，且可以保证延迟加载
+ */
+public class SingletonDemoInStaticInnerClass {
+
+    private static class InnerClass {
+        private final static SingletonDemoInStaticInnerClass instance = new SingletonDemoInStaticInnerClass();
+    }
+
+    private SingletonDemoInStaticInnerClass() {
+
+    }
+
+    public  static SingletonDemoInStaticInnerClass getInstance() {
+        return InnerClass.instance;
+    }
+
+}
+
+/**
+ * @author zkx
+ * 枚举：这是实现单例模式的最佳方法。它更简洁，
+ * 不仅能避免多线程同步问题，而且还自动支持序列化机制，防止反序列化重新创建新的对象，
+ * 绝对防止多次实例化。但是不是延迟加载的。
+ */
+public enum SingletonEnum {
+    INSTANCE;
+
+    public void sayHello() {
+        System.out.println("......");
+    }
+}
