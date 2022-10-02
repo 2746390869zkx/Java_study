@@ -1,4 +1,4 @@
-/**
+/**  
  * @author zkx
  * 饿汉式，没有用到就加载
  
@@ -41,6 +41,29 @@ public class SingletonDemoInLazy {
         //如果还没有创建，便创建后返回
         if (instance == null) {
             instance = new SingletonDemoInLazy();
+        }
+        return instance;
+    }
+}
+
+/**
+ * @author zkx
+ * 懒汉式单例模式，在用到才加载，
+ */
+public class SingletonDemoInLazy_Safe {
+
+    /*私有 + static*/
+    private static SingletonDemoInLazy_Safe instance ;
+    /*私有构造器*/
+    private SingletonDemoInLazy_Safe() {
+
+    }
+    /* 提供一个对外的的得到单例的方法 使用sychronized使得线程安全，但是同步之后效率慢*/
+    public synchronized static SingletonDemoInLazy_Safe getInstance() {
+
+        //如果还没有创建，便创建后返回
+        if (instance == null) {
+            instance = new SingletonDemoInLazy_Safe();
         }
         return instance;
     }
