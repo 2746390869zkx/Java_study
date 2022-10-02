@@ -34,3 +34,56 @@ class Solution {
         return (int)max;
     }
 }
+
+
+//第三道题  位运算 ＋ 前缀和  6194. 最小 XOR
+
+
+/**
+先求出num2中1的个数count，异或是不相同为1，所以x中的count个1和32-count个0要和num1错开，因为高位影响最大，所以从num1高位开始遍历，
+
+如果num1这个位是1，那就需要x为1，检查1的个数，只要大于0就用，否则就用0
+
+如果num1这个位是0，那就需要x为0，检查0的个数，只要大于0就用，否则就用1 
+
+*/
+
+class Solution {
+    public int minimizeXor(int num1, int num2) {
+        int one = getOne(num2);
+        int zero = 32 - one;
+        int x = 0;
+        for (int i = 31 ; i >= 0 ; i --) {
+            int d = num1 >> i & 1;
+            if (d == 0) {
+                //
+                if (zero > 0) {
+                    x = x * 2 + 0;
+                    zero --;
+                } else {
+                    x = x * 2 + 1;
+                    one --;
+                }
+            } else {
+                if (one > 0) {
+                    x = x * 2 + 1;
+                    one --;
+                } else {
+                    x = x * 2 + 0;
+                    zero --;
+                }
+            }
+        }
+        return x;
+    }
+    //求二进制1的个数
+    int getOne(int num) {
+        int res = 0;
+        while (num != 0) {
+            //这里是求最后一个的
+            num = num - (num & -num);
+            res ++;
+        } 
+        return res;
+    }
+}
