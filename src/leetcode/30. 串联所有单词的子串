@@ -1,0 +1,29 @@
+//滑动窗口 + 哈希表
+
+class Solution {
+    public List<Integer> findSubstring(String s, String[] words) {
+        int wordNums = words.length;
+        int wordLen = words[0].length();
+        int sumLen = s.length();
+        List<Integer> res = new ArrayList<>();
+        Map<String,Integer> allWords = new HashMap<>();
+        for (String word : words) {
+            int value = allWords.getOrDefault(word,0);
+            allWords.put(word,value + 1);
+        }
+        for (int i = 0 ; i < sumLen ; i ++) {
+            if (i + (wordLen * wordNums) > sumLen) break;
+            Map<String,Integer> hasWords = new HashMap<>();
+            int cnt = 0;
+            for (int j = i ; j < i + (wordNums * wordLen) ; j += wordLen) {
+                String word = s.substring(j,j + wordLen);
+                int value = hasWords.getOrDefault(word,0);
+                hasWords.put(word,value + 1);
+                if (value + 1 > allWords.getOrDefault(word,0)) break;
+                cnt ++;
+            }
+            if (cnt == wordNums) res.add(i);
+        }
+        return res;
+    }
+}
