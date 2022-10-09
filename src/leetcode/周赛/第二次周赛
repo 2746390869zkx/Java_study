@@ -1,0 +1,91 @@
+//第二次周赛
+//1、6200. 处理用时最长的那个任务的员工
+class Solution {
+    public int hardestWorker(int n, int[][] logs) {
+        int max = logs[0][1];
+        int res = logs[0][0];
+        for (int i = 1 ; i < logs.length; i ++) {
+            if ((logs[i][1] - logs[i - 1][1]) > max) {
+                    res = logs[i][0];
+                    max = logs[i][1] - logs[i - 1][1];
+            } else if ((logs[i][1] - logs[i - 1][1]) == max) {
+                if (logs[i][0] < res) {
+                    res = logs[i][0];
+                }
+            }
+        }
+        return res;
+    }
+}
+//6201. 找出前缀异或的原始数组
+class Solution {
+    // 101 111
+    public int[] findArray(int[] pref) {
+        int n = pref.length;
+        if (n == 1) return pref;
+        int[] res = new int[n];
+        res[0] = pref[0];
+        int xor = res[0];
+        for (int i = 1 ; i < n ; i ++) {
+            res[i] = xor ^ pref[i];
+            xor ^= res[i];
+        }
+        return res;
+    }
+}
+//6202. 使用机器人打印字典序最小的字符串
+class Solution {
+    public String robotWithString(String s) {
+        Stack<Character> stack = new Stack<>();
+        StringBuilder sb = new StringBuilder();
+        char[] crr = s.toCharArray();
+        
+        int[] arr = new int[crr.length];
+        int[] num = new int[26];
+        Arrays.fill(num,-1);
+        int n = crr.length;
+        int cur = 0;
+        for (int i = 0 ; i < n ; i ++) {
+            int j = crr[i] -  'a';
+            num[j] = i;
+        }
+        for (int i = 0 ; i < 26 ; i ++) {
+            char c = (char)(i + 'a');
+            while (!stack.isEmpty()) {
+                char c1 = stack.peek();
+                if (c1 > c) break;
+                else sb.append(stack.pop());
+            }
+            if (num[i] != -1 && cur <= num[i]) {
+                while (cur <= num[i]) {
+                    if (crr[cur] == c) sb.append(c);
+                    else stack.push(crr[cur]);
+                    cur ++;
+                }
+            }
+            // if (cur == n) break;
+        }
+        while (!stack.isEmpty()) {
+            sb.append(stack.pop());
+        }
+        return sb.toString();
+    }
+}
+
+//6203. 矩阵中和能被 K 整除的路径
+class Solution {
+    public int numberOfPaths(int[][] grid, int k) {
+        int mod = (int)1e9 + 7;
+        int n = grid.length;
+        int m = grid[0].length;
+        int[][][] dp = new int[n + 1][m + 1][k];
+        dp[0][1][0] = 1;
+        for (int i = 0 ; i < n ; i ++) 
+            for (int j = 0 ; j < m ; j ++) 
+                for (int v = 0 ; v < k; v ++) {
+                    int num = dp[i + 1][j + 1][(v + grid[i][j]) % k];
+                    dp[i + 1][j + 1][(v + grid[i][j]) % k] = ((num + dp[i + 1][j][v]) % mod + dp[i][j + 1][v]) % mod;
+            }
+        return dp[n][m][0];
+    }
+}
