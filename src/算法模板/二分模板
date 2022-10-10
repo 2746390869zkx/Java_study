@@ -44,3 +44,29 @@ int bsearch_2(int l, int r)
     }
     return l;
 }
+
+
+//浮点数二分
+#include<iostream>
+
+using namespace std;
+
+const double MIN = 1e-8;
+
+double check(double num) {
+    return num * num * num;
+}
+
+int main() {
+    double num;
+    cin >> num;
+    double l = -100 ,r = 100;
+    while (r - l >= MIN) {
+        double m = (l + r) / 2;
+        if (check(m) >= num) r = m;
+        else l = m;
+    }
+    printf("%.6lf\n",l);
+    
+    return 0;
+}
