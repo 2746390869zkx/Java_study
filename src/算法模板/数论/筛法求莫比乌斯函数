@@ -1,0 +1,34 @@
+/*
+筛法求解 莫比乌斯函数
+*/
+
+#include<cstdio>
+#include<cstring>
+
+const int N = 11;
+
+int primes[N],mu[N];
+bool vis[N];
+
+int tot = 0;
+
+void init() {
+    
+    mu[1] = 1;
+    
+    for (int i = 2 ; i < N ; i ++) {
+        if (!vis[i]) {
+            primes[tot ++] = i;
+            mu[i] = -1;//质数的莫比乌斯函数
+        }
+        for (int j = 0 ; j < tot && i * primes[j] < N ; j++) {
+            vis[primes[j] * i] = 1;//标记已经访问过了
+            if(i % primes[j]) mu[i * primes[j]] = -mu[i];
+            else{
+                mu[i * primes[j]] = 0;
+                break;
+            }
+        }
+    }
+    
+}
