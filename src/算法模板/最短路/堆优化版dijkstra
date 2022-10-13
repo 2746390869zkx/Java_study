@@ -1,0 +1,63 @@
+/*
+通过堆（优先队列），将朴素版的djistra算法优化到o(mlogn)
+*/
+
+#include<iostream>
+#include<queue>
+#include<vector>
+#include<cstring>
+
+
+using namespace std;
+
+typedef pair<int,int> PII;
+
+const int N = 150010;
+
+int ne[N],he[N],e[N],w[N],dist[N];
+bool st[N];
+
+int idx,n,m;
+
+void add(int a,int b,int c) {
+    e[idx] = b,w[idx] = c,ne[idx] = he[a],he[a] = idx ++;
+}
+
+int Dijkstra() {
+    memset(dist,0x3f,sizeof dist);
+    priority_queue<PII,vector<PII>,greater<PII>> heap;
+    heap.push({0,1});
+    
+    while (heap.size()) {
+        auto top = heap.top();
+        heap.pop();
+        int ver = top.second,distance = top.first;
+        if (st[ver]) continue;
+        st[ver] = true;
+        
+        for (int i = he[ver]; i != -1 ; i = ne[i]) {
+            int j = e[i];
+            if (dist[j] > w[i] + distance) {
+                dist[j] = w[i] + distance;
+                heap.push({dist[j],j});
+            }
+        }
+    }
+    
+    return dist[n] == 0x3f3f3f3f ? -1 : dist[n];
+}
+
+int main() {
+    
+    cin >> n >> m;
+    memset(he,-1,sizeof he);
+    while (m --) {
+        int a,b,c;
+        scanf("%d%d%d",&a,&b,&c);
+        add(a,b,c);
+    }
+    
+    cout << Dijkstra() << endl;
+    
+    return 0;
+}
