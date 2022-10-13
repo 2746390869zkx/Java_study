@@ -1,0 +1,49 @@
+
+/*
+https://www.acwing.com/problem/content/855/
+*/
+
+#include<iostream>
+#include<cstring>
+using namespace std;
+
+const int N = 10010,M = 510,INF = 0x3f3f3f3f;
+
+struct {
+    int a,b,w;
+}edges[N];
+int dist[M],backup[M];
+int n,m,k;
+
+int bellman_ford() {
+    memset(dist,0x3f,sizeof dist);
+    dist[1] = 0;
+    for (int i = 0 ; i < k ; i ++) {
+        memcpy(backup,dist,sizeof dist);
+        for (int j = 0 ; j < m ; j ++) 
+        {
+            int a = edges[j].a,b = edges[j].b,w = edges[j].w;
+            dist[b] = min(dist[b],backup[a] + w);
+        }
+    }
+    
+    //这里大于0x3f3f3f3f / 2 是因为存在负权边。
+    return dist[n] > (INF / 2) ? -1 * INF : dist[n];
+}
+
+int main() {
+    cin >> n >> m >> k;
+    
+    for (int i = 0; i < m ; i ++) {
+        int a,b,c;
+        scanf("%d%d%d",&a,&b,&c);
+        edges[i] = {a,b,c};
+    }
+    
+    int ans = bellman_ford();
+    if (ans == - INF) puts("impossible");
+    else cout << ans << endl;
+    
+    return 0;
+    
+}
