@@ -1,0 +1,63 @@
+/*
+
+*/
+
+#include<iostream>
+#include<cstring>
+#include<algorithm>
+#include<queue>
+
+using namespace std;
+
+const int N = 100010,INF = 0x3f3f3f3f;
+
+int ne[N],he[N],e[N],w[N],dist[N];
+bool st[N];
+int idx,n,m;
+
+void add(int a,int b,int c) {
+    e[idx] = b,w[idx] = c,ne[idx] = he[a],he[a] = idx ++;
+}
+
+int spfa() {
+    memset(dist,0x3f,sizeof dist);
+    dist[1] = 0;
+    queue<int> q;
+    q.push(1);
+    st[1] = true;
+    while(q.size()) {
+        int t = q.front();
+        q.pop();
+        st[t] = false;
+        
+        for (int i = he[t]; i != -1; i = ne[i]) {
+            int j = e[i];
+            if (dist[j] > dist[t] + w[i]) {
+                dist[j] = dist[t] + w[i];
+                //因为j更性了最短路如果j没有加进去j
+                if (!st[j]) {
+                    st[j] = true;
+                    q.push(j);
+                }
+            }
+        }
+    }
+    
+    return dist[n] == INF ? - INF : dist[n];
+}
+
+int main () {
+    cin >> n >> m;
+    memset(he,-1,sizeof he);
+    while (m --) {
+        int a,b,c;
+        scanf("%d%d%d",&a,&b,&c);
+        add(a,b,c);
+    }
+    
+    int ans = spfa();
+    if (ans == -INF) puts("impossible");
+    else cout << ans << endl;
+    
+    return 0;
+}
