@@ -15,14 +15,16 @@ int Di() {
     dist[1] = 0;
     for (int i = 1 ; i <= n ; i ++) {
         
+        //1）找到当前还没有计算好最短路的节点，并且距离最短
         int t = -1;
         for (int j = 1 ; j <= n ;j ++) {
             if (!st[j] && (t == -1 || dist[t] > dist[j]))
                 t = j;
         }
-        
+        //2 ）标记已经被计算出了最短。
         st[t] = true;
         
+        //  3）使用这个最短更新其他的节点信息。
         for (int j = 1 ; j <= n ;j ++)
             dist[j] = min(dist[j],dist[t] + g[t][j]);
         
