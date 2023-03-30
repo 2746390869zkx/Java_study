@@ -1,0 +1,73 @@
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.Arrays;
+
+/**
+ * @author zkx
+ */
+public class Main {
+
+    static int N = 500,M = (int)1e5 + 10;
+
+    int[] he = new int[N],ne = new int[M],e = new int[M];
+
+    boolean[] st  = new boolean[M];
+
+    int[] matches = new int[N];
+
+    int idx;
+
+    int n1,n2,m;
+
+    void add(int a,int b) {
+        e[idx] = b;
+        ne[idx] = he[a];
+        he[a] = idx ++;
+    }
+
+
+    public static void main(String[] args) throws IOException {
+        BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
+        String[] s = in.readLine().split(" ");
+        int n1 = Integer.parseInt(s[0]),n2 = Integer.parseInt(s[1]),m = Integer.parseInt(s[2]);
+        Main main = new Main();
+        main.n1 = n1;
+        main.n2 = n2;
+        main.m = m;
+        Arrays.fill(main.he,-1);
+        for (int i = 0 ; i < m ; i ++) {
+            String[] s1 = in.readLine().split(" ");
+            int a = Integer.parseInt(s1[0]),b = Integer.parseInt(s1[1]);
+            main.add(a,b);
+        }
+
+        int ans = 0;
+        for (int i = 1; i <= n1; i++) {
+            if (main.find(i)) ans ++;
+        }
+        System.out.println(ans);
+        in.close();
+    }
+
+    boolean find(int x) {
+
+        Arrays.fill(st,false);
+
+        for (int i = he[x] ; i != -1; i = ne[i]) {
+            int j = e[i];
+            if (!st[j]) {
+
+                st[j] = true;
+                if (matches[i] == 0 || find(matches[i])) {
+                    matches[j] = x;
+                    return true;
+                }
+
+            }
+        }
+
+        return false;
+    }
+
+}
